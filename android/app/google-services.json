@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "59984677410",
+    "project_id": "eeny-meeny-394ad",
+    "storage_bucket": "eeny-meeny-394ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59984677410:android:2559076020f254e0d5187b",
+        "android_client_info": {
+          "package_name": "EenyMeeny.package"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59984677410-8l2jkckd200o7rc1601gt4r69kg8926e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Xdrse3JE5i1oGAriQHR8Xw0P4Kk-Trs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59984677410-8l2jkckd200o7rc1601gt4r69kg8926e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59984677410:android:1466b309b45b706ed5187b",
+        "android_client_info": {
+          "package_name": "edu.cpp.cs4750.mycloset.my_closet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59984677410-8l2jkckd200o7rc1601gt4r69kg8926e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Xdrse3JE5i1oGAriQHR8Xw0P4Kk-Trs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59984677410-8l2jkckd200o7rc1601gt4r69kg8926e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
