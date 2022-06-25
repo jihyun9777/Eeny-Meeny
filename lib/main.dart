@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'menu_page.dart';
-import 'camera_page.dart';
 import 'edit_page.dart';
 
 void main() async {
