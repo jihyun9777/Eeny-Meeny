@@ -35,6 +35,10 @@ class _ClosetPageState extends State<ClosetPage> {
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
       uploadFileToFBStorage(imageFile);
+      print("success gallery photo");
+    }
+    else{
+      print("failed gallery photo");
     }
   }
 
@@ -46,7 +50,8 @@ class _ClosetPageState extends State<ClosetPage> {
     );
     if(pickedFile != null) {
       File imageFile = File(pickedFile.path);
-      uploadFileToFBStorage(imageFile);
+      //uploadFileToFBStorage(imageFile);
+
       print("success photo");
     }
     else{
