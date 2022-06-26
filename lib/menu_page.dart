@@ -47,11 +47,13 @@ class _MenuPageState extends State<MenuPage> {
 
   Widget bottomDetailsSheet() {
     return DraggableScrollableSheet(
+
       initialChildSize: 0.13,
       minChildSize: 0.13,
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return ListView(
+          //shrinkWrap: true,
           controller: scrollController,
           children: [
             Stack(
@@ -64,53 +66,63 @@ class _MenuPageState extends State<MenuPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Image.asset(''),
-              ]
-            ),
-
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => const ClosetPage()),
-                    // );
-                  },
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.only(left: 80, top: 33),
-                  ),
-                  child: Text (
-                    menu[0],
-                    style: const TextStyle (
-                      color: Colors.white,
-                      fontSize: 30,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => const ClosetPage()),
-                    // );
-                  },
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.only(left: 80, top: 33),
-                  ),
-                  child: Text (
-                    menu[1],
-                    style: const TextStyle (
-                      color: Colors.white,
-                      fontSize: 30,
-                    ),
+                Container(
+                  margin: const EdgeInsets.only(top: 35),
+                  alignment: Alignment.center,
+                  child: (
+                    Image.asset(
+                      'asset/door_handle.png',
+                      scale: 4,
+                    )
                   ),
                 ),
               ]
             ),
+            SizedBox(
+              height: 500,
+              width: 400,
+              child: Column(
+                children: [
+                  drawerList(),
+                ],
+              ),
+            )
           ]
         );
       },
+    );
+  }
+
+  Widget drawerList() {
+    return Container(
+      width: 400,
+      height: 40,
+      margin: EdgeInsets.only(left: 5),
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: menu.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            child: TextButton(
+              onPressed: () {
+
+              },
+              style: TextButton.styleFrom(
+                //padding: const EdgeInsets.only(left: 80, top: 33),
+              ),
+              child: Text(
+                menu[index],
+                style: const TextStyle (
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontFamily: 'Vonique',
+                ),
+              ),
+            ),
+          );
+        }
+      ),
     );
   }
 }
