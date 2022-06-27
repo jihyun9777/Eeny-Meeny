@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
+import 'edit_page.dart';
+
 class ClosetPage extends StatefulWidget {
   const ClosetPage({Key? key}) : super(key: key);
   @override
@@ -50,8 +52,7 @@ class _ClosetPageState extends State<ClosetPage> {
     );
     if(pickedFile != null) {
       File imageFile = File(pickedFile.path);
-      //uploadFileToFBStorage(imageFile);
-
+      uploadFileToFBStorage(imageFile);
       print("success photo");
     }
     else{
@@ -61,11 +62,12 @@ class _ClosetPageState extends State<ClosetPage> {
 
   void uploadFileToFBStorage(File file) {
     var fileName = DateTime.now().millisecondsSinceEpoch.toString() + ".jpg";
-    final storageRef = FirebaseStorage.instance.ref().child("Outer/" + fileName).putFile(file)
+    FirebaseStorage.instance.ref().child("Outer/" + fileName).putFile(file)
       .then((res) {
         print("Success upload");
     }).catchError((error) {
         print("Faild upload");
+        print(error);
     });
   }
 
@@ -212,6 +214,10 @@ class _ClosetPageState extends State<ClosetPage> {
             TextButton(
               onPressed: () {
                 _getFromCamera();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const EditPage()),
+                  );
               },
               child: const Text (
                 'Take a Photo',

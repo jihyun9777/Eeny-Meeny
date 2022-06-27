@@ -1,54 +1,105 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 
-class EditPage extends StatefulWidget {
-  const EditPage({Key? key, required this.title}) : super(key: key);
+import 'storage.dart';
 
-  final String title;
+class EditPage extends StatefulWidget {
+  const EditPage({Key? key}) : super(key: key);
 
   @override
   State<EditPage> createState() => _EditPageState();
 }
 
 class _EditPageState extends State<EditPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    final Storage storage = Storage();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Cloud Storage'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'My Demo App 2',
+      body: Column(
+        children: [
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                final results = await FilePicker.platform.pickFiles(
+                  allowMultiple: false,
+                  type: FileType.custom,
+                  allowedExtensions: ['png', 'jpg'],
+                );
+                if(results == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('No file selected'),
+                    )
+                  );
+                  return null;
+                }
+
+                final path = results.files.single.path!;
+                final fileName = results.files.single.name;
+
+                storage.uploadFile(path, fileName).then((value) => print('Done'));
+              },
+              child: const Text('Upload File'),
             ),
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline4,
-            ),
-          ],
-        ),
+          ),
+          FutureBuilder(
+            future: storage.listFiles(),
+            builder: (BuildContext context, AsyncSnapshot<firebase_storage.ListResult> snapshot) {
+              if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                return Container(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.items.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        child: Text(snapshot.data!.items[index].name),
+                      );
+                    }
+                  ),
+                );
+              }
+              if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+                return const CircularProgressIndicator();
+              }
+              return Container();
+            }
+          ),
+          FutureBuilder(
+            future: storage.downloadURL('outer.jpg'),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                return Container(
+                  width: 300,
+                  height: 250,
+                  child: Image.network(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
+                  ),
+
+                );
+              }
+              if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+                return const CircularProgressIndicator();
+              }
+              return Container();
+            }
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.access_time_filled),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
