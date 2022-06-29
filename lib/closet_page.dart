@@ -62,13 +62,26 @@ class _ClosetPageState extends State<ClosetPage> {
 
   void uploadFileToFBStorage(File file) {
     var fileName = DateTime.now().millisecondsSinceEpoch.toString() + ".jpg";
-    FirebaseStorage.instance.ref().child("Outer/" + fileName).putFile(file)
+
+    FirebaseStorage.instance.ref().child("outer/" + fileName).putFile(file)
       .then((res) {
         print("Success upload");
     }).catchError((error) {
         print("Faild upload");
         print(error);
     });
+  }
+
+  String? _getFileToFBStorage(String name) {
+    FirebaseStorage.instance.ref().child("outer/" + name).getDownloadURL()
+        .then((res) {
+      print("Success url");
+      return res;
+    }).catchError((error) {
+      print("Faild url");
+      print(error);
+    });
+    return null;
   }
 
   @override
@@ -227,21 +240,10 @@ class _ClosetPageState extends State<ClosetPage> {
                 ),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: clothesList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 50,
-                      color: Colors.amber[500],
-                      child: Center(child: Text('${clothesList[index]}')),
-                    );
-                  }
-              ),
-            ),
           ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',

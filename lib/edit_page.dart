@@ -24,82 +24,82 @@ class _EditPageState extends State<EditPage> {
       appBar: AppBar(
         title: const Text('Cloud Storage'),
       ),
-      body: Column(
-        children: [
-          Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                final results = await FilePicker.platform.pickFiles(
-                  allowMultiple: false,
-                  type: FileType.custom,
-                  allowedExtensions: ['png', 'jpg'],
-                );
-                if(results == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('No file selected'),
-                    )
-                  );
-                  return null;
-                }
-
-                final path = results.files.single.path!;
-                final fileName = results.files.single.name;
-
-                storage.uploadFile(path, fileName).then((value) => print('Done'));
-              },
-              child: const Text('Upload File'),
-            ),
-          ),
-          FutureBuilder(
-            future: storage.listFiles(),
-            builder: (BuildContext context, AsyncSnapshot<firebase_storage.ListResult> snapshot) {
-              if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                return Container(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.items.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ElevatedButton(
-                        onPressed: () {
-
-                        },
-                        child: Text(snapshot.data!.items[index].name),
-                      );
-                    }
-                  ),
-                );
-              }
-              if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
-                return const CircularProgressIndicator();
-              }
-              return Container();
-            }
-          ),
-          FutureBuilder(
-            future: storage.downloadURL('outer.jpg'),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                return Container(
-                  width: 300,
-                  height: 250,
-                  child: Image.network(
-                    snapshot.data!,
-                    fit: BoxFit.cover,
-                  ),
-
-                );
-              }
-              if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
-                return const CircularProgressIndicator();
-              }
-              return Container();
-            }
-          ),
-        ],
-      ),
+      // body: Column(
+      //   children: [
+      //     Center(
+          //   child: ElevatedButton(
+          //     onPressed: () async {
+          //       final results = await FilePicker.platform.pickFiles(
+          //         allowMultiple: false,
+          //         type: FileType.custom,
+          //         allowedExtensions: ['png', 'jpg'],
+          //       );
+          //       if(results == null) {
+          //         ScaffoldMessenger.of(context).showSnackBar(
+          //           const SnackBar(
+          //             content: Text('No file selected'),
+          //           )
+          //         );
+          //         return null;
+          //       }
+          //
+          //       final path = results.files.single.path!;
+          //       final fileName = results.files.single.name;
+          //
+          //       storage.uploadFile(path, fileName).then((value) => print('Done'));
+          //     },
+          //     child: const Text('Upload File'),
+          //   ),
+          // ),
+          // FutureBuilder(
+          //   future: storage.listFiles(),
+          //   builder: (BuildContext context, AsyncSnapshot<firebase_storage.ListResult> snapshot) {
+          //     if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          //       return Container(
+          //         height: 100,
+          //         child: ListView.builder(
+          //           scrollDirection: Axis.horizontal,
+          //           shrinkWrap: true,
+          //           itemCount: snapshot.data!.items.length,
+          //           itemBuilder: (BuildContext context, int index) {
+          //             return ElevatedButton(
+          //               onPressed: () {
+          //
+          //               },
+          //               child: Text(snapshot.data!.items[index].name),
+          //             );
+          //           }
+          //         ),
+          //       );
+          //     }
+          //     if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+          //       return const CircularProgressIndicator();
+          //     }
+          //     return Container();
+          //   }
+          // ),
+          // FutureBuilder(
+          //   future: storage.downloadURL('outer.jpg'),
+          //   builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          //     if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          //       return Container(
+          //         width: 300,
+          //         height: 250,
+          //         child: Image.network(
+          //           snapshot.data!,
+          //           fit: BoxFit.cover,
+          //         ),
+          //
+          //       );
+          //     }
+          //     if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+          //       return const CircularProgressIndicator();
+          //     }
+          //     return Container();
+          //   }
+          // ),
+        //],
+      //),
     );
   }
 }

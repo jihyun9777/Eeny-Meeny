@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'closet_page.dart';
@@ -18,6 +18,7 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
 
   final List<String> menu = <String> ['Outer', 'Top', 'Bottom', 'Dress', 'Shoes', 'Other'];
+  final Storage storage = Storage();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,9 @@ class _MenuPageState extends State<MenuPage> {
               Expanded(
                 flex: 9,
                 child: Stack(
+                  children: [
 
+                  ]
                 ),
               ),
             ],
@@ -55,7 +58,6 @@ class _MenuPageState extends State<MenuPage> {
 
   Widget bottomDetailsSheet() {
     return DraggableScrollableSheet(
-
       initialChildSize: 0.13,
       minChildSize: 0.13,
       maxChildSize: 0.8,
@@ -86,9 +88,10 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               ]
             ),
-            SizedBox(
+            Container(
               height: 500,
               width: 400,
+              color: Colors.grey[845],
               child: Column(
                 children: [
                   drawerList(),
@@ -102,6 +105,7 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Widget drawerList() {
+
     return Container(
       width: 400,
       height: 40,
@@ -139,30 +143,24 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Widget showClothes(String menu){
-    final Storage storage = Storage();
-    storage.listFiles();
 
-    return Container();
-
-    // return FutureBuilder(
-    //     future: storage.listFiles(),
-    //     builder: (BuildContext context, AsyncSnapshot<firebase_storage.ListResult> snapshot) {
-    //         print("here");
-    //         return Container(
-    //           height: 400,
-    //           child: ListView.builder(
-    //               shrinkWrap: true,
-    //               itemCount: snapshot.data!.items.length,
-    //               itemBuilder: (BuildContext context, int index) {
-    //                 return Text("Hello",
-    //                 style: TextStyle(
-    //                   fontSize: 30,
-    //                   color: Colors.white,
-    //                 ));
-    //               }
-    //           ),
-    //         );
-    //     }
-    // );
+    return FutureBuilder(
+        future: storage.listFiles(menu),
+        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+          return Container(
+            height: 400,
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  print("!!!!");
+                  return Image.network (
+                    snapshot.data![index],
+                  );
+                }
+            ),
+          );
+        }
+    );
   }
 }
