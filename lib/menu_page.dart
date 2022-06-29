@@ -44,7 +44,23 @@ class _MenuPageState extends State<MenuPage> {
                 flex: 9,
                 child: Stack(
                   children: [
-
+                FutureBuilder(
+                future: storage.listFiles('outer'),
+                  builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                    return Container(
+                      height: 400,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Image.network (
+                              snapshot.data![index],
+                            );
+                          }
+                      ),
+                    );
+                  }
+              )
                   ]
                 ),
               ),
@@ -91,7 +107,7 @@ class _MenuPageState extends State<MenuPage> {
             Container(
               height: 500,
               width: 400,
-              color: Colors.grey[845],
+              color: Colors.grey[800],
               child: Column(
                 children: [
                   drawerList(),

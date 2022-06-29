@@ -33,6 +33,7 @@ class Storage{
     for (firebase_storage.Reference ref in results.items) {
       String url = await firebase_storage.FirebaseStorage.instance.ref(ref.fullPath).getDownloadURL();
       resultURLs.add(url);
+      print(url);
     }
 
     return resultURLs;

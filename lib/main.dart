@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'firebase_options.dart';
 import 'menu_page.dart';
 import 'edit_page.dart';
@@ -10,6 +11,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+  // firebaseAppCheck.installAppCheckProviderFactory(SafetyNetAppCheckProviderFactory.getInstance());
+  await FirebaseAppCheck.instance.activate();
+  // await FirebaseAppCheck.instance.activate(
+  //   //webRecaptchaSiteKey: '6LdxDq4gAAAAAP1lirdUu98dEHPGSSJMiv-cKCqy',
+  // );
   runApp(const MyApp());
 }
 
@@ -78,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.signInAnonymously();
+    //FirebaseAuth.instance.signInAnonymously();
 
     return Scaffold(
       body: Column(
