@@ -39,6 +39,11 @@ class Storage{
     return resultURLs;
   }
 
+  Future<String> downloadURL(String imageName) async{
+    String url = await storage.ref().child(imageName).getDownloadURL();
+    return url;
+  }
+
   // List<dynamic> listFiles(String folderName) {
   //   FirebaseStorage.instance.ref().child(folderName).listAll()
   //     .then((value) {

@@ -17,8 +17,9 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
 
-  final List<String> menu = <String> ['Outer', 'Top', 'Bottom', 'Dress', 'Shoes', 'Other'];
+  final List<String> menu = <String> ['outer', 'top', 'bottom', 'dress', 'shoes', 'other'];
   final Storage storage = Storage();
+  late int menuCounter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +45,7 @@ class _MenuPageState extends State<MenuPage> {
                 flex: 9,
                 child: Stack(
                   children: [
-                FutureBuilder(
-                future: storage.listFiles('outer'),
-                  builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-                    return Container(
-                      height: 400,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Image.network (
-                              snapshot.data![index],
-                            );
-                          }
-                      ),
-                    );
-                  }
-              )
+
                   ]
                 ),
               ),
@@ -79,7 +64,7 @@ class _MenuPageState extends State<MenuPage> {
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return ListView(
-          //shrinkWrap: true,
+          shrinkWrap: true,
           controller: scrollController,
           children: [
             Stack(
@@ -111,9 +96,34 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   drawerList(),
+                  Container(
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    width: 400,
+                    height: 450,
+                    child: FutureBuilder(
+                      future: storage.listFiles(menu[menuCounter].toString()),
+                      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                        print(menu[menuCounter]);
+                        return GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 1,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemCount: snapshot.data?.length, //
+                          itemBuilder: (BuildContext context, int index) {
+                            return Image.network(
+                              snapshot.data![index],
+                            );
+                          }
+                        );
+                      }
+                    ),
+                  ),
                 ],
               ),
-            )
+            ),
           ]
         );
       },
@@ -134,11 +144,11 @@ class _MenuPageState extends State<MenuPage> {
           return Container(
             child: TextButton(
               onPressed: () {
-                showClothes(menu[index]);
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => const ClosetPage()),
-                //   );
+                //showClothes(index);
+                menuCounter = index;
+                setState(() {
+
+                });
               },
               style: TextButton.styleFrom(
                 //padding: const EdgeInsets.only(left: 80, top: 33),
@@ -158,25 +168,47 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget showClothes(String menu){
+//   Widget showClothes(int index){
+//     return FutureBuilder(
+//         future: storage.listFiles(menu),
+//         builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+//           return Container(
+//             height: 400,
+//             child: ListView.builder(
+//                 shrinkWrap: true,
+//                 itemCount: snapshot.data!.length,
+//                 itemBuilder: (BuildContext context, int index) {
+//                   print("!!!!");
+//                   return Image.network (
+//                     snapshot.data![index],
+//                   );
+//                 }
+//             ),
+//           );
+//         }
+//     );
+//
+//     //outer
+//     if(index == 0){
+//       return const Text(
+//         "data",
+//         style: TextStyle(
+//           fontSize: 30,
+//           color: Colors.white,
+//         ),
+//       );
+//
+//       return GridView.count(
+//         primary: false,
+//         padding: const EdgeInsets.all(20),
+//         crossAxisSpacing: 10,
+//         mainAxisSpacing: 10,
+//         crossAxisCount: 3,
+//         children: [
+//           Image.asset('asset.image.png'),
+//         ],
+//       );
+//     }
+//   }
 
-    return FutureBuilder(
-        future: storage.listFiles(menu),
-        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-          return Container(
-            height: 400,
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  print("!!!!");
-                  return Image.network (
-                    snapshot.data![index],
-                  );
-                }
-            ),
-          );
-        }
-    );
-  }
 }
