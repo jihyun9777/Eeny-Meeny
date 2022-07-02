@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
 
-        fontFamily: 'Alex',
+        fontFamily: 'Vonique',
         primarySwatch: white,
       ),
       home: const MyHomePage(title: 'Eeny Meeny'),
@@ -108,7 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     widget.title,
                     style: const TextStyle(
                       color: Colors.amberAccent,
-                      fontSize: 50,
+                      fontSize: 48,
+                      fontFamily: 'Alex'
                     ),
                   ),
                 ),
@@ -118,7 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     widget.title,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 49.5,
+                      fontSize: 47.7,
+                      fontFamily: 'Alex'
                     ),
                   ),
                 ),

@@ -21,6 +21,50 @@ class _MenuPageState extends State<MenuPage> {
   final Storage storage = Storage();
   late int menuCounter = 0;
 
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      uploadFileToFBStorage(imageFile, menu[menuCounter].toString());
+      print("success gallery photo");
+    }
+    else{
+      print("failed gallery photo");
+    }
+  }
+
+  _getFromCamera() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      maxHeight: 1800,
+      maxWidth: 1800,
+    );
+    if(pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      uploadFileToFBStorage(imageFile, menu[menuCounter].toString());
+      print("success photo");
+    }
+    else{
+      print("failed photo");
+    }
+  }
+
+  void uploadFileToFBStorage(File file, String folder) {
+    var fileName = DateTime.now().millisecondsSinceEpoch.toString() + ".jpg";
+
+    FirebaseStorage.instance.ref().child("$folder/$fileName").putFile(file)
+        .then((res) {
+      print("Success upload");
+    }).catchError((error) {
+      print("Faild upload");
+      print(error);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -96,30 +140,68 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   drawerList(),
-                  Container(
-                    margin: EdgeInsets.only(left: 10, right: 10),
-                    width: 400,
-                    height: 450,
-                    child: FutureBuilder(
-                      future: storage.listFiles(menu[menuCounter].toString()),
-                      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-                        print(menu[menuCounter]);
-                        return GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 1,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                          ),
-                          itemCount: snapshot.data?.length, //
-                          itemBuilder: (BuildContext context, int index) {
-                            return Image.network(
-                              snapshot.data![index],
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 10, right: 10),
+                        width: 400,
+                        height: 450,
+                        child: FutureBuilder(
+                          future: storage.listFiles(menu[menuCounter].toString()),
+                          builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                            print(menu[menuCounter]);
+                            return GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                childAspectRatio: 1,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              itemCount: snapshot.data?.length, //
+                              itemBuilder: (BuildContext context, int index) {
+                                return Image.network(
+                                  snapshot.data![index],
+                                );
+                              }
                             );
                           }
-                        );
-                      }
-                    ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        margin: const EdgeInsets.only(top:400, right: 10),
+                        child: FloatingActionButton(
+                          tooltip: "Add from camera",
+                          onPressed: () {
+                            _getFromCamera();
+                            setState(() {
+
+                            });
+                          },
+                          backgroundColor: Colors.grey[850],
+                          child: const Icon(
+                            Icons.add_a_photo,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        margin: const EdgeInsets.only(top:335, right: 10),
+                        child: FloatingActionButton(
+                          tooltip: "Add from Gallery",
+                          onPressed: () {
+                            _getFromGallery();
+                            drawerList();
+                          },
+                          backgroundColor: Colors.grey[850],
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ]
                   ),
                 ],
               ),
@@ -158,7 +240,6 @@ class _MenuPageState extends State<MenuPage> {
                 style: const TextStyle (
                   color: Colors.white,
                   fontSize: 20,
-                  fontFamily: 'Vonique',
                 ),
               ),
             ),
