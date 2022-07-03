@@ -20,7 +20,8 @@ class _MenuPageState extends State<MenuPage> {
   final List<String> menu = <String> ['outer', 'top', 'bottom', 'dress', 'shoes', 'other'];
   final Storage storage = Storage();
   late int menuCounter = 0;
-  //late imageToggle toggle;
+  bool toggle = false;
+  late String imageURL;
 
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
@@ -152,8 +153,6 @@ class _MenuPageState extends State<MenuPage> {
                         child: FutureBuilder(
                           future: storage.listFiles(menu[menuCounter].toString()),
                           builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-                            //print(menu[menuCounter]);
-                            //var toggle = List<bool>.filled(snapshot.data!.length, false, growable: true);
 
                             return GridView.builder(
                               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -167,35 +166,14 @@ class _MenuPageState extends State<MenuPage> {
 
                                 return GestureDetector(
                                   onTap: () {
-                                    //_isSelected = true;
+                                    toggle = true;
+                                    imageURL = snapshot.data![index];
                                     setState(() {
 
                                     });
                                   },
-                                  child: Stack(
-                                    children: [
-                                      Image.network(
-                                        snapshot.data![index],
-                                      ),
-                                      Visibility(
-                                        visible: false,
-                                        child: ListView(
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-
-                                              },
-                                              child: const Text (
-                                                "Add",
-                                                style: TextStyle(
-                                                  fontSize: 30
-                                                ),
-                                              )
-                                            )
-                                          ],
-                                        )
-                                      )
-                                    ]
+                                  child: Image.network(
+                                    snapshot.data![index],
                                   ),
                                 );
                               }
@@ -204,37 +182,95 @@ class _MenuPageState extends State<MenuPage> {
                         ),
                       ),
                       Container(
-                        alignment: Alignment.bottomRight,
-                        margin: const EdgeInsets.only(top:400, right: 10),
-                        child: FloatingActionButton(
-                          tooltip: "Add from camera",
-                          onPressed: () {
-                            _getFromCamera();
-                            setState(() {
+                        margin: EdgeInsets.only(top: 400),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Visibility(
+                              visible: toggle,
+                              child: Container(
+                                height: 50,
+                                width: 250,
+                                //margin: EdgeInsets.only(right: 50),
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(right: 10),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          toggle = false;
+                                          setState(() {
 
-                            });
-                          },
-                          backgroundColor: Colors.grey[850],
-                          child: const Icon(
-                            Icons.add_a_photo,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        margin: const EdgeInsets.only(top:335, right: 10),
-                        child: FloatingActionButton(
-                          tooltip: "Add from Gallery",
-                          onPressed: () {
-                            _getFromGallery();
-                            drawerList();
-                          },
-                          backgroundColor: Colors.grey[850],
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          ),
+                                          });
+                                        },
+                                        child: const Text (
+                                          "Add",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all(Colors.grey[900]),
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        toggle = false;
+                                        setState(() {
+
+                                        });
+                                      },
+                                      child: const Text (
+                                        "Delete",
+                                        style: TextStyle(
+                                            fontSize: 20
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(Colors.grey[900]),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ),
+                            Container(
+                              alignment: Alignment.bottomRight,
+                              margin: const EdgeInsets.only(right: 10),
+                              child: FloatingActionButton(
+                                tooltip: "Add from camera",
+                                onPressed: () {
+                                  _getFromCamera();
+                                  setState(() {
+
+                                  });
+                                },
+                                backgroundColor: Colors.grey[850],
+                                child: const Icon(
+                                  Icons.add_a_photo,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.bottomRight,
+                              margin: const EdgeInsets.only(right: 10),
+                              child: FloatingActionButton(
+                                tooltip: "Add from Gallery",
+                                onPressed: () {
+                                  _getFromGallery();
+                                  drawerList();
+                                },
+                                backgroundColor: Colors.grey[850],
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ]
                         ),
                       ),
                     ]
