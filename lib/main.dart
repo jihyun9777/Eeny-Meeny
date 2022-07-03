@@ -5,6 +5,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'firebase_options.dart';
 import 'menu_page.dart';
 import 'edit_page.dart';
+import 'splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Vonique',
         primarySwatch: white,
       ),
-      home: const MyHomePage(title: 'Eeny Meeny'),
+      home: Splash(),
     );
   }
 }

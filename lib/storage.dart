@@ -26,14 +26,14 @@ class Storage{
     firebase_storage.ListResult results = await storage.ref(folderName).listAll();
     List<String> resultURLs = [];
 
-    results.items.forEach((firebase_storage.Reference ref) {
-      print('Found file: $ref');
-    });
+    // results.items.forEach((firebase_storage.Reference ref) {
+    //   print('Found file: $ref');
+    // });
 
     for (firebase_storage.Reference ref in results.items) {
       String url = await firebase_storage.FirebaseStorage.instance.ref(ref.fullPath).getDownloadURL();
       resultURLs.add(url);
-      print(url);
+      // print(url);
     }
 
     return resultURLs;
