@@ -12,16 +12,16 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    //_navigateToHome();
+    _navigateToHome();
   }
 
-  // _navigateToHome() async {
-  //   await Future.delayed(Duration(milliseconds: 1500), () {});
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => MyHomePage(title: 'Eeny Meeny'))
-  //   );
-  // }
+  _navigateToHome() async {
+    await Future.delayed(Duration(milliseconds: 1500), () {});
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyHomePage(title: 'Eeny Meeny'))
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,7 @@ class _SplashState extends State<Splash> {
       backgroundColor: Colors.grey,
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Stack(
               children: [
@@ -54,7 +55,11 @@ class _SplashState extends State<Splash> {
                 ),
               ]
             ),
-            Image.asset('asset/launcher_icon.png'),
+            SizedBox(
+              height: 100,
+              width: 100,
+              child: Image.asset('asset/launcher_icon.png')
+            ),
           ]
         ),
       ),
