@@ -20,8 +20,9 @@ class _MenuPageState extends State<MenuPage> {
   final List<String> menu = <String> ['outer', 'top', 'bottom', 'dress', 'shoes', 'other'];
   final Storage storage = Storage();
   late int menuCounter = 0;
-  bool toggle = false;
-  late String imageURL;
+  bool clickToggle = false;
+  bool imageToggle = false;
+  String imageURL = '';
 
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
@@ -92,7 +93,38 @@ class _MenuPageState extends State<MenuPage> {
                 child: Stack(
                   children: [
                     Container(
-
+                      child: Visibility(
+                        visible: imageToggle,
+                        child: Container(
+                          height: 50,
+                          width: 250,
+                          //margin: EdgeInsets.only(right: 50),
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              LongPressDraggable(
+                                child: Container(
+                                  //margin: EdgeInsets.only(right: 10),
+                                  child: SizedBox(
+                                    height: 200,
+                                    width: 200,
+                                    child: Image.network(
+                                      imageURL,
+                                    ),
+                                  ),
+                                ),
+                                feedback: SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: Image.network(
+                                    imageURL,
+                                  ),
+                                ),
+                              ),
+                            ]
+                          )
+                        )
+                      ),
                     )
                   ]
                 ),
@@ -166,7 +198,7 @@ class _MenuPageState extends State<MenuPage> {
 
                                 return GestureDetector(
                                   onTap: () {
-                                    toggle = true;
+                                    clickToggle = true;
                                     imageURL = snapshot.data![index];
                                     setState(() {
 
@@ -187,7 +219,7 @@ class _MenuPageState extends State<MenuPage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Visibility(
-                              visible: toggle,
+                              visible: clickToggle,
                               child: Container(
                                 height: 50,
                                 width: 250,
@@ -199,7 +231,8 @@ class _MenuPageState extends State<MenuPage> {
                                       margin: EdgeInsets.only(right: 10),
                                       child: TextButton(
                                         onPressed: () {
-                                          toggle = false;
+                                          clickToggle = false;
+                                          imageToggle = true;
                                           setState(() {
 
                                           });
@@ -217,7 +250,7 @@ class _MenuPageState extends State<MenuPage> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        toggle = false;
+                                        clickToggle = false;
                                         setState(() {
 
                                         });
