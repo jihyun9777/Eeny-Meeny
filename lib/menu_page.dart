@@ -23,7 +23,9 @@ class _MenuPageState extends State<MenuPage> {
   bool clickToggle = false;
   bool imageToggle = false;
   String imageURL = '';
-  late List<String> imageURLList = [];
+  String folder = '';
+  int imageIndex = 0;
+  List<String> imageURLList = [];
 
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
@@ -64,7 +66,7 @@ class _MenuPageState extends State<MenuPage> {
         .then((res) {
       print("Success upload");
     }).catchError((error) {
-      print("Faild upload");
+      print("Failed upload");
       print(error);
     });
   }
@@ -184,7 +186,7 @@ class _MenuPageState extends State<MenuPage> {
                         width: 400,
                         height: 450,
                         child: FutureBuilder(
-                          future: storage.listFiles(menu[menuCounter].toString()),
+                          future: storage.listFilesURL(menu[menuCounter].toString()),
                           builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
 
                             return GridView.builder(
@@ -194,13 +196,15 @@ class _MenuPageState extends State<MenuPage> {
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10,
                               ),
-                              itemCount: snapshot.data?.length, //
+                              itemCount: snapshot.data?.length?? 0, //
                               itemBuilder: (BuildContext context, int index) {
 
                                 return GestureDetector(
                                   onTap: () {
                                     clickToggle = true;
                                     imageURL = snapshot.data![index];
+                                    folder = menu[menuCounter];
+                                    imageIndex = index;
                                     setState(() {
 
                                     });
@@ -253,6 +257,12 @@ class _MenuPageState extends State<MenuPage> {
                                     TextButton(
                                       onPressed: () {
                                         clickToggle = false;
+                                        print("folder = " + folder.toString());
+                                        print("index = " + imageIndex.toString());
+                                        storage.listFiles(folder);
+                                        print(storage.names);
+                                        storage.deleteFile(folder, storage.names[imageIndex]);
+                                        storage.listFiles(folder);
                                         setState(() {
 
                                         });

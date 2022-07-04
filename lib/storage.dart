@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 // import 'package:firebase_storage/firebase_storage.dart';
 
 class Storage{
+  List<String> names = [];
   List<dynamic> emp = [];
 
   final firebase_storage.FirebaseStorage storage =
@@ -22,7 +23,7 @@ class Storage{
     }
   }
 
-  Future<List<String>> listFiles(String folderName) async {
+  Future<List<String>> listFilesURL(String folderName) async {
     firebase_storage.ListResult results = await storage.ref(folderName).listAll();
     List<String> resultURLs = [];
 
@@ -39,9 +40,35 @@ class Storage{
     return resultURLs;
   }
 
+  void listFiles(String folderName) async {
+    firebase_storage.ListResult results = await storage.ref(folderName).listAll();
+    names = [];
+
+    for (firebase_storage.Reference ref in results.items) {
+      String name = ref.name;
+      names.add(name);
+      print(names);
+    }
+  }
+
   Future<String> downloadURL(String imageName) async{
     String url = await storage.ref().child(imageName).getDownloadURL();
     return url;
+  }
+
+  Future<void> deleteFile(String folder, String fileName) async {
+    // print(fileURL);
+    // File file = new File(fileURL);
+    // String fileName = file.path.split('/').last;
+    // print(fileName);
+
+    print(folder + '/' + fileName);
+    storage.ref().child(folder + '/' + fileName).delete().then((res) {
+      print("Delete Success");
+    }).catchError((error) {
+      print("Delete failed");
+      print(error);
+    });
   }
 
   // List<dynamic> listFiles(String folderName) {
