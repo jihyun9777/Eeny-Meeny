@@ -23,6 +23,7 @@ class _MenuPageState extends State<MenuPage> {
   bool clickToggle = false;
   bool imageToggle = false;
   String imageURL = '';
+  late List<String> imageURLList = [];
 
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
@@ -96,20 +97,20 @@ class _MenuPageState extends State<MenuPage> {
                       child: Visibility(
                         visible: imageToggle,
                         child: Container(
-                          height: 50,
+                          height: 800,
                           width: 250,
                           //margin: EdgeInsets.only(right: 50),
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              LongPressDraggable(
+                          child: ListView.builder(
+                            itemCount: imageURLList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return LongPressDraggable(
                                 child: Container(
                                   //margin: EdgeInsets.only(right: 10),
                                   child: SizedBox(
                                     height: 200,
                                     width: 200,
                                     child: Image.network(
-                                      imageURL,
+                                      imageURLList[index],
                                     ),
                                   ),
                                 ),
@@ -117,11 +118,11 @@ class _MenuPageState extends State<MenuPage> {
                                   height: 200,
                                   width: 200,
                                   child: Image.network(
-                                    imageURL,
+                                    imageURLList[index],
                                   ),
                                 ),
-                              ),
-                            ]
+                              );
+                            }
                           )
                         )
                       ),
@@ -233,6 +234,7 @@ class _MenuPageState extends State<MenuPage> {
                                         onPressed: () {
                                           clickToggle = false;
                                           imageToggle = true;
+                                          imageURLList.add(imageURL);
                                           setState(() {
 
                                           });
