@@ -20,12 +20,23 @@ class _MenuPageState extends State<MenuPage> {
   final List<String> menu = <String> ['outer', 'top', 'bottom', 'dress', 'shoes', 'other'];
   final Storage storage = Storage();
   late int menuCounter = 0;
+
+  //Add and Delete image
   bool clickToggle = false;
   bool imageToggle = false;
+  bool deleteToggle = false;
   String imageURL = '';
   String folder = '';
   int imageIndex = 0;
   List<String> imageURLList = [];
+  int deleteIndex = 0;
+
+  //Change size of image
+  double zoom = 1.0;
+  double previousZoom = 0.0;
+  double positionX = 0.0;
+  double positionY = 0.0;
+
 
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
@@ -87,7 +98,7 @@ class _MenuPageState extends State<MenuPage> {
                     width: 400,
                     child: Image.asset(
                       'asset/bar.jpg',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                 ),
               ),
@@ -95,19 +106,24 @@ class _MenuPageState extends State<MenuPage> {
                 flex: 9,
                 child: Stack(
                   children: [
-                    Container(
-                      child: Visibility(
-                        visible: imageToggle,
-                        child: Container(
-                          height: 800,
-                          width: 250,
-                          //margin: EdgeInsets.only(right: 50),
-                          child: ListView.builder(
-                            itemCount: imageURLList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return LongPressDraggable(
-                                child: Container(
-                                  //margin: EdgeInsets.only(right: 10),
+                    Visibility(
+                      visible: imageToggle,
+                      child: Container(
+                        height: 800,
+                        width: 400,
+                        //margin: EdgeInsets.only(right: 50),
+                        child: ListView.builder(
+                          itemCount: imageURLList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                deleteToggle = true;
+                                deleteIndex = index;
+                              },
+                              child: Positioned(
+                                top: positionY,
+                                left: positionX,
+                                child: Draggable(
                                   child: SizedBox(
                                     height: 200,
                                     width: 200,
@@ -115,20 +131,55 @@ class _MenuPageState extends State<MenuPage> {
                                       imageURLList[index],
                                     ),
                                   ),
-                                ),
-                                feedback: SizedBox(
-                                  height: 200,
-                                  width: 200,
-                                  child: Image.network(
-                                    imageURLList[index],
+                                  childWhenDragging: Container(
+                                    height: 200,
+                                    width: 200,
+                                    child: Text(''),
                                   ),
+                                  feedback: SizedBox(
+                                    height: 200,
+                                    width: 200,
+                                    child: Image.network(
+                                      imageURLList[index],
+                                    ),
+                                  ),
+                                  onDragEnd: (drag) {
+                                    setState(() {
+                                      print(drag.offset.dy.toString());
+                                      print(drag.offset.dx.toString());
+                                      positionY = drag.offset.dy;
+                                      positionX = drag.offset.dx;
+                                    });
+                                  },
                                 ),
-                              );
-                            }
-                          )
-                        )
+                              )
+                            );
+                          }
+                        ),
+                      )
+                    ),
+                    Visibility(
+                      visible: deleteToggle,
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        margin: EdgeInsets.only(top: 10, right: 10),
+                        child: FloatingActionButton(
+                          tooltip: "Remove",
+                          onPressed: () {
+                            imageURLList.removeAt(deleteIndex);
+                            deleteToggle = false;
+                            setState(() {
+
+                            });
+                          },
+                          backgroundColor: Colors.grey[850],
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    )
+                    ),
                   ]
                 ),
               ),
@@ -157,7 +208,7 @@ class _MenuPageState extends State<MenuPage> {
                   width: 400,
                   child: Image.asset(
                     'asset/bar.jpg',
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 ),
                 Container(
@@ -209,8 +260,11 @@ class _MenuPageState extends State<MenuPage> {
 
                                     });
                                   },
-                                  child: Image.network(
-                                    snapshot.data![index],
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Image.network(
+                                      snapshot.data![index],
+                                    ),
                                   ),
                                 );
                               }
