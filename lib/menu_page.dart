@@ -104,7 +104,7 @@ class _MenuPageState extends State<MenuPage> {
               ),
               Expanded(
                 flex: 9,
-                child: Stack(
+                child: Column(
                   children: [
                     Visibility(
                       visible: imageToggle,
