@@ -88,105 +88,105 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
       backgroundColor: Colors.white24,
       body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: SizedBox(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
                     height: 80,
                     width: 400,
                     child: Image.asset(
                       'asset/bar.jpg',
                       fit: BoxFit.fill,
                     ),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 9,
-                child: Column(
-                  children: [
-                    Visibility(
-                      visible: imageToggle,
-                      child: Container(
-                        height: 800,
-                        width: 400,
-                        //margin: EdgeInsets.only(right: 50),
-                        child: ListView.builder(
-                          itemCount: imageURLList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                deleteToggle = true;
-                                deleteIndex = index;
-                              },
-                              child: Positioned(
-                                top: positionY,
-                                left: positionX,
-                                child: Draggable(
-                                  child: SizedBox(
-                                    height: 200,
-                                    width: 200,
-                                    child: Image.network(
-                                      imageURLList[index],
-                                    ),
-                                  ),
-                                  childWhenDragging: Container(
-                                    height: 200,
-                                    width: 200,
-                                    child: Text(''),
-                                  ),
-                                  feedback: SizedBox(
-                                    height: 200,
-                                    width: 200,
-                                    child: Image.network(
-                                      imageURLList[index],
-                                    ),
-                                  ),
-                                  onDragEnd: (drag) {
-                                    setState(() {
-                                      print(drag.offset.dy.toString());
-                                      print(drag.offset.dx.toString());
-                                      positionY = drag.offset.dy;
-                                      positionX = drag.offset.dx;
-                                    });
-                                  },
-                                ),
-                              )
-                            );
-                          }
+                Expanded(
+                  flex: 9,
+                  child: Stack(
+                      children: [
+                        Visibility(
+                            visible: imageToggle,
+                            child: Container(
+                              // height: 700,
+                              // width: 400,
+                              //margin: EdgeInsets.only(right: 50),
+                              child: ListView.builder(
+                                  itemCount: imageURLList.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          deleteToggle = true;
+                                          deleteIndex = index;
+                                        },
+                                        child: Positioned(
+                                          top: positionY,
+                                          left: positionX,
+                                          child: Draggable(
+                                            child: SizedBox(
+                                              height: 200,
+                                              width: 200,
+                                              child: Image.network(
+                                                imageURLList[index],
+                                              ),
+                                            ),
+                                            childWhenDragging: Container(
+                                              height: 200,
+                                              width: 200,
+                                              child: Text(''),
+                                            ),
+                                            feedback: SizedBox(
+                                              height: 200,
+                                              width: 200,
+                                              child: Image.network(
+                                                imageURLList[index],
+                                              ),
+                                            ),
+                                            onDragEnd: (drag) {
+                                              setState(() {
+                                                print(drag.offset.dy.toString());
+                                                print(drag.offset.dx.toString());
+                                                positionY = drag.offset.dy;
+                                                positionX = drag.offset.dx;
+                                              });
+                                            },
+                                          ),
+                                        )
+                                    );
+                                  }
+                              ),
+                            )
                         ),
-                      )
-                    ),
-                    Visibility(
-                      visible: deleteToggle,
-                      child: Container(
-                        alignment: Alignment.topRight,
-                        margin: EdgeInsets.only(top: 10, right: 10),
-                        child: FloatingActionButton(
-                          tooltip: "Remove",
-                          onPressed: () {
-                            imageURLList.removeAt(deleteIndex);
-                            deleteToggle = false;
-                            setState(() {
+                        Visibility(
+                          visible: deleteToggle,
+                          child: Container(
+                            alignment: Alignment.topRight,
+                            margin: EdgeInsets.only(top: 10, right: 10),
+                            child: FloatingActionButton(
+                              tooltip: "Remove",
+                              onPressed: () {
+                                imageURLList.removeAt(deleteIndex);
+                                deleteToggle = false;
+                                setState(() {
 
-                            });
-                          },
-                          backgroundColor: Colors.grey[850],
-                          child: const Icon(
-                            Icons.delete,
-                            color: Colors.white,
+                                });
+                              },
+                              backgroundColor: Colors.grey[850],
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ]
+                      ]
+                  ),
                 ),
-              ),
-            ],
-          ),
-          bottomDetailsSheet(),
-        ]
+              ],
+            ),
+            bottomDetailsSheet(),
+          ]
       ),
     );
   }
@@ -198,186 +198,186 @@ class _MenuPageState extends State<MenuPage> {
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return ListView(
-          shrinkWrap: true,
-          controller: scrollController,
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  height: 80,
-                  width: 400,
-                  child: Image.asset(
-                    'asset/bar.jpg',
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 35),
-                  alignment: Alignment.center,
-                  child: (
-                    Image.asset(
-                      'asset/door_handle.png',
-                      scale: 4,
-                    )
-                  ),
-                ),
-              ]
-            ),
-            Container(
-              height: 500,
-              width: 400,
-              color: Colors.grey[800],
-              child: Column(
-                children: [
-                  drawerList(),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 10, right: 10),
-                        width: 400,
-                        height: 450,
-                        child: FutureBuilder(
-                          future: storage.listFilesURL(menu[menuCounter].toString()),
-                          builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-
-                            return GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                childAspectRatio: 1,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                              ),
-                              itemCount: snapshot.data?.length?? 0, //
-                              itemBuilder: (BuildContext context, int index) {
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    clickToggle = true;
-                                    imageURL = snapshot.data![index];
-                                    folder = menu[menuCounter];
-                                    imageIndex = index;
-                                    setState(() {
-
-                                    });
-                                  },
-                                  child: Container(
-                                    color: Colors.white,
-                                    child: Image.network(
-                                      snapshot.data![index],
-                                    ),
-                                  ),
-                                );
-                              }
-                            );
-                          }
-                        ),
+            shrinkWrap: true,
+            controller: scrollController,
+            children: [
+              Stack(
+                  children: [
+                    SizedBox(
+                      height: 80,
+                      width: 400,
+                      child: Image.asset(
+                        'asset/bar.jpg',
+                        fit: BoxFit.fill,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 400),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: clickToggle,
-                              child: Container(
-                                height: 50,
-                                width: 250,
-                                //margin: EdgeInsets.only(right: 50),
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: 10),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          clickToggle = false;
-                                          imageToggle = true;
-                                          imageURLList.add(imageURL);
-                                          setState(() {
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 35),
+                      alignment: Alignment.center,
+                      child: (
+                          Image.asset(
+                            'asset/door_handle.png',
+                            scale: 4,
+                          )
+                      ),
+                    ),
+                  ]
+              ),
+              Container(
+                height: 500,
+                width: 400,
+                color: Colors.grey[800],
+                child: Column(
+                  children: [
+                    drawerList(),
+                    Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 10, right: 10),
+                            width: 400,
+                            height: 450,
+                            child: FutureBuilder(
+                                future: storage.listFilesURL(menu[menuCounter].toString()),
+                                builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
 
-                                          });
-                                        },
-                                        child: const Text (
-                                          "Add",
-                                          style: TextStyle(
-                                              fontSize: 20
-                                          ),
-                                        ),
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all(Colors.grey[900]),
-                                        ),
+                                  return GridView.builder(
+                                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 200,
+                                        childAspectRatio: 1,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
                                       ),
-                                    ),
-                                    TextButton(
+                                      itemCount: snapshot.data?.length?? 0, //
+                                      itemBuilder: (BuildContext context, int index) {
+
+                                        return GestureDetector(
+                                          onTap: () {
+                                            clickToggle = true;
+                                            imageURL = snapshot.data![index];
+                                            folder = menu[menuCounter];
+                                            imageIndex = index;
+                                            setState(() {
+
+                                            });
+                                          },
+                                          child: Container(
+                                            color: Colors.white,
+                                            child: Image.network(
+                                              snapshot.data![index],
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                  );
+                                }
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 400),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Visibility(
+                                      visible: clickToggle,
+                                      child: Container(
+                                        height: 50,
+                                        width: 250,
+                                        //margin: EdgeInsets.only(right: 50),
+                                        child: ListView(
+                                          scrollDirection: Axis.horizontal,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(right: 10),
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  clickToggle = false;
+                                                  imageToggle = true;
+                                                  imageURLList.add(imageURL);
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: const Text (
+                                                  "Add",
+                                                  style: TextStyle(
+                                                      fontSize: 20
+                                                  ),
+                                                ),
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all(Colors.grey[900]),
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                clickToggle = false;
+                                                print("folder = " + folder.toString());
+                                                print("index = " + imageIndex.toString());
+                                                storage.listFiles(folder);
+                                                print(storage.names);
+                                                storage.deleteFile(folder, storage.names[imageIndex]);
+                                                storage.listFiles(folder);
+                                                setState(() {
+
+                                                });
+                                              },
+                                              child: const Text (
+                                                "Delete",
+                                                style: TextStyle(
+                                                    fontSize: 20
+                                                ),
+                                              ),
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all(Colors.grey[900]),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                  ),
+                                  Container(
+                                    alignment: Alignment.bottomRight,
+                                    margin: const EdgeInsets.only(right: 10),
+                                    child: FloatingActionButton(
+                                      tooltip: "Add from camera",
                                       onPressed: () {
-                                        clickToggle = false;
-                                        print("folder = " + folder.toString());
-                                        print("index = " + imageIndex.toString());
-                                        storage.listFiles(folder);
-                                        print(storage.names);
-                                        storage.deleteFile(folder, storage.names[imageIndex]);
-                                        storage.listFiles(folder);
+                                        _getFromCamera();
                                         setState(() {
 
                                         });
                                       },
-                                      child: const Text (
-                                        "Delete",
-                                        style: TextStyle(
-                                            fontSize: 20
-                                        ),
+                                      backgroundColor: Colors.grey[850],
+                                      child: const Icon(
+                                        Icons.add_a_photo,
+                                        color: Colors.white,
                                       ),
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(Colors.grey[900]),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.bottomRight,
+                                    margin: const EdgeInsets.only(right: 10),
+                                    child: FloatingActionButton(
+                                      tooltip: "Add from Gallery",
+                                      onPressed: () {
+                                        _getFromGallery();
+                                        drawerList();
+                                      },
+                                      backgroundColor: Colors.grey[850],
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Colors.white,
                                       ),
-                                    )
-                                  ],
-                                ),
-                              )
+                                    ),
+                                  ),
+                                ]
                             ),
-                            Container(
-                              alignment: Alignment.bottomRight,
-                              margin: const EdgeInsets.only(right: 10),
-                              child: FloatingActionButton(
-                                tooltip: "Add from camera",
-                                onPressed: () {
-                                  _getFromCamera();
-                                  setState(() {
-
-                                  });
-                                },
-                                backgroundColor: Colors.grey[850],
-                                child: const Icon(
-                                  Icons.add_a_photo,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.bottomRight,
-                              margin: const EdgeInsets.only(right: 10),
-                              child: FloatingActionButton(
-                                tooltip: "Add from Gallery",
-                                onPressed: () {
-                                  _getFromGallery();
-                                  drawerList();
-                                },
-                                backgroundColor: Colors.grey[850],
-                                child: const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ]
-                        ),
-                      ),
-                    ]
-                  ),
-                ],
+                          ),
+                        ]
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ]
+            ]
         );
       },
     );
@@ -390,32 +390,32 @@ class _MenuPageState extends State<MenuPage> {
       height: 40,
       margin: EdgeInsets.only(left: 5),
       child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: menu.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: TextButton(
-              onPressed: () {
-                //showClothes(index);
-                menuCounter = index;
-                setState(() {
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: menu.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              child: TextButton(
+                onPressed: () {
+                  //showClothes(index);
+                  menuCounter = index;
+                  setState(() {
 
-                });
-              },
-              style: TextButton.styleFrom(
-                //padding: const EdgeInsets.only(left: 80, top: 33),
-              ),
-              child: Text(
-                menu[index],
-                style: const TextStyle (
-                  color: Colors.white,
-                  fontSize: 20,
+                  });
+                },
+                style: TextButton.styleFrom(
+                  //padding: const EdgeInsets.only(left: 80, top: 33),
+                ),
+                child: Text(
+                  menu[index],
+                  style: const TextStyle (
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-            ),
-          );
-        }
+            );
+          }
       ),
     );
   }
